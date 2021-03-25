@@ -1,0 +1,174 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <style>
+            body{
+                background-color: rgb(93, 93, 93);
+            }    
+
+            button:hover{
+                background-color: #33373b;
+            }
+
+            option{
+                background-color: whitesmoke;
+            }
+
+            button:focus, input:focus, select:focus {
+                box-shadow: 0 0 0 0 !important;
+                outline: 0 !important;
+            }
+
+            .principal{
+                width: 500px;
+                height: 600px;
+                border: rgb(93, 93, 93) solid 2px;
+                padding: 30px;
+                border-radius: 20px;
+                background-color: rgb(255, 255, 255);
+                
+                position: absolute;
+                top: 0; bottom: 0;
+                left: 0; right: 0;
+                margin: auto;
+            }
+            
+            .InputSelect{
+                display: flex;
+            }
+            .InputSelect input{
+                border-top-right-radius: 0px !important;
+                border-bottom-right-radius: 0px !important;
+            }
+            .InputSelect select{
+                border-top-left-radius: 0px !important;
+                border-bottom-left-radius: 0px !important;
+            }
+        </style>
+    </head>
+    <div class="principal">
+        <h1 class="text-center">Calculadora</h1>
+
+        <hr>
+
+        <div class="mb-3">
+            <h3 class='pb-1'>Massa (m)</h3>
+            <select id="base" class="input-group-text w-100">
+                <option value="MonoxidodeCarbono">Monóxido de Carbono</option>
+                <option value="DioxidodeCarbono">Dióxido de Carbono</option>
+                <option value="DioxidodeEnxofre">Dióxido de Enxofre</option>
+                <option value="TrioxidodeEnxofre">Trióxido de Enxofre </option>
+                <option value="DioxidodeNitrogênio">Dióxido de Nitrogênio</option>
+                <option value="Ozonio">Ozônio</option>
+            </select>
+        </div>
+
+        <div class="mb-3">  
+            <h3 class='mb-1'>Volume (L)</h3>
+            <p id='texto'></p>
+            <div class='InputSelect w-100'>
+                <input id="volume" class="form-control">
+                <select id="uniP" onchange="att()" class="input-group-text">
+                    <option value="ppm">ppm</option>
+                    <option value="mg/m">mg/m³</option>
+                </select>
+            </div>
+        </div>
+       
+        <button onclick="calcular()" class="btn btn-dark w-100 mb-3">Calcular</button>
+        <p id="result" class="text-center border border-success">Resultado</p>        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <script>
+        const Ratm = 24.4483;
+        var result = document.getElementById('result');
+        var texto = document.getElementById('texto');
+
+        function att(){
+            var uniP = document.getElementById('uniP').value;
+            if (uniP == "ppm"){
+                texto.innerHTML = 'informe o valor em "mg/m³".'
+            } else{
+                texto.innerHTML = 'informe o valor em "ppm".'
+            }
+        }
+        att()
+
+        function calcular(){
+            var resultado;
+            var base = document.getElementById('base').value;
+            var volume = parseFloat(document.getElementById('volume').value);
+            var uniP = document.getElementById('uniP').value;
+
+            if(isNaN(volume)){
+                result.innerHTML = "Informe um valor";
+            }else{
+                if(uniP == "ppm"){
+                    switch(base){
+                        case "MonoxidodeCarbono":
+                            resultado = (volume * 28.01)/Ratm;
+                            break;
+
+                        case "DioxidodeCarbono":
+                            resultado = (volume * 44.01)/Ratm;
+                            break;
+
+                        case "DioxidodeEnxofre":
+                            resultado = (volume * 64.066)/Ratm;
+                            break;
+
+                        case "TrioxidodeEnxofre":
+                            resultado = (volume * 80.06)/Ratm;
+                            break;
+
+                        case "DioxidodeNitrogênio":
+                            resultado = (volume * 46.0055)/Ratm;
+                            break;
+
+                        case "Ozonio":
+                            resultado = (volume * 48)/Ratm;
+                            break;
+                    
+                    }
+                    resultado = resultado.toFixed(2);
+                    result.innerHTML = String(resultado) + " mg/m³.";
+                }else{
+                    switch(base){
+                        case "MonoxidodeCarbono":
+                            resultado = (volume * Ratm)/28.01;
+                            break;
+
+                        case "DioxidodeCarbono":
+                            resultado = (volume * Ratm)/44,01;
+                            break;
+
+                        case "DioxidodeEnxofre":
+                            resultado = (volume * Ratm)/64.066;
+                            break;
+
+                        case "TrioxidodeEnxofre":
+                            resultado = (volume * Ratm)/80.06;
+                            break;
+
+                        case "DioxidodeNitrogênio":
+                            resultado = (volume * Ratm)/46.0055;
+                            break;
+
+                        case "Ozonio":
+                            resultado = (volume * Ratm)/48;
+                            break;
+
+                    }
+                    resultado = resultado.toFixed(2);
+                    result.innerHTML = String(resultado) + " ppm.";
+                }
+            }
+        }
+    </script>
+</html>
